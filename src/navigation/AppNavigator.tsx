@@ -14,6 +14,7 @@ import HomeScreen from '../screens/HomeScreen';
 import HistoryScreen from '../screens/HistoryScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import LinkBankScreen from '../screens/LinkBankScreen';
+import TopUpScreen from '../screens/TopUpScreen';
 
 // Stack Navigator cho xác thực
 const AuthStack = createNativeStackNavigator();
@@ -29,11 +30,6 @@ const AuthNavigator = () => (
       name="Login" 
       component={LoginScreen} 
       options={{ headerShown: false }}
-    />
-    <AuthStack.Screen 
-      name="Register" 
-      component={RegisterScreen} 
-      options={{ title: 'Đăng Ký' }}
     />
   </AuthStack.Navigator>
 );
@@ -56,9 +52,27 @@ const BankNavigator = () => (
   </BankStack.Navigator>
 );
 
+// Stack Navigator cho màn hình nạp tiền
+const TopUpStack = createNativeStackNavigator();
+const TopUpNavigator = () => (
+  <TopUpStack.Navigator
+    screenOptions={{
+      headerStyle: { backgroundColor: '#4a6ea9' },
+      headerTintColor: '#fff',
+      headerTitleStyle: { fontWeight: 'bold' },
+    }}
+  >
+    <TopUpStack.Screen 
+      name="TopUp" 
+      component={TopUpScreen} 
+      options={{ title: 'Nạp Tiền' }}
+    />
+  </TopUpStack.Navigator>
+);
+
 // Tab Navigator cho người dùng đã đăng nhập
 const AppTab = createBottomTabNavigator();
-const TabNavigator = () => (
+const MainTabNavigator = () => (
   <AppTab.Navigator
     screenOptions={({ route }) => ({
       headerStyle: { backgroundColor: '#4a6ea9' },
@@ -101,7 +115,7 @@ const TabNavigator = () => (
 
 // Stack Navigator chính
 const MainStack = createNativeStackNavigator();
-const MainNavigator = () => {
+const AppNavigator = () => {
   const { signed, loading } = useAuth();
 
   if (loading) {
@@ -115,8 +129,9 @@ const MainNavigator = () => {
     <MainStack.Navigator screenOptions={{ headerShown: false }}>
       {signed ? (
         <>
-          <MainStack.Screen name="App" component={TabNavigator} />
+          <MainStack.Screen name="Main" component={MainTabNavigator} />
           <MainStack.Screen name="BankStack" component={BankNavigator} />
+          <MainStack.Screen name="TopUpStack" component={TopUpNavigator} />
         </>
       ) : (
         <MainStack.Screen name="Auth" component={AuthNavigator} />
@@ -125,4 +140,4 @@ const MainNavigator = () => {
   );
 };
 
-export default MainNavigator;
+export default AppNavigator;

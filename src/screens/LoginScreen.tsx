@@ -1,25 +1,25 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Image, Alert } from 'react-native';
+import { View, StyleSheet, Image, Alert } from 'react-native';
 import { TextInput, Button, Text, ActivityIndicator } from 'react-native-paper';
 import { useAuth } from '../context/AuthContext';
 
 const LoginScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
-  const [email, setEmail] = useState('');
+  const [mssv, setMssv] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
 
   const handleLogin = async () => {
-    if (!email || !password) {
-      Alert.alert('Lỗi', 'Vui lòng nhập đầy đủ email và mật khẩu');
+    if (!mssv || !password) {
+      Alert.alert('Lỗi', 'Vui lòng nhập đầy đủ MSSV và mật khẩu');
       return;
     }
 
     try {
       setIsLoading(true);
-      await login(email, password);
+      await login(mssv, password);
     } catch (error) {
-      Alert.alert('Đăng nhập thất bại', 'Email hoặc mật khẩu không chính xác');
+      Alert.alert('Đăng nhập thất bại', 'MSSV hoặc mật khẩu không chính xác');
       console.error(error);
     } finally {
       setIsLoading(false);
@@ -39,11 +39,10 @@ const LoginScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
       <View style={styles.formContainer}>
         <TextInput
-          label="Email"
-          value={email}
-          onChangeText={setEmail}
+          label="Mã số sinh viên"
+          value={mssv}
+          onChangeText={setMssv}
           mode="outlined"
-          keyboardType="email-address"
           autoCapitalize="none"
           style={styles.input}
         />
@@ -65,13 +64,6 @@ const LoginScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         >
           {isLoading ? <ActivityIndicator color="#fff" /> : 'Đăng nhập'}
         </Button>
-
-        <View style={styles.registerContainer}>
-          <Text>Chưa có tài khoản? </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-            <Text style={styles.registerText}>Đăng ký ngay</Text>
-          </TouchableOpacity>
-        </View>
       </View>
     </View>
   );
@@ -109,15 +101,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     paddingVertical: 8,
     backgroundColor: '#4a6ea9',
-  },
-  registerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginTop: 20,
-  },
-  registerText: {
-    color: '#4a6ea9',
-    fontWeight: 'bold',
   },
 });
 

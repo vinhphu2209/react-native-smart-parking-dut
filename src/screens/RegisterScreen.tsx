@@ -5,14 +5,14 @@ import { register } from '../api/api';
 
 const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const [mssv, setMssv] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const handleRegister = async () => {
     // Kiểm tra đầu vào
-    if (!name || !email || !password || !confirmPassword) {
+    if (!name || !mssv || !password || !confirmPassword) {
       Alert.alert('Lỗi', 'Vui lòng nhập đầy đủ thông tin');
       return;
     }
@@ -22,16 +22,9 @@ const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       return;
     }
 
-    // Kiểm tra định dạng email đơn giản
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      Alert.alert('Lỗi', 'Địa chỉ email không hợp lệ');
-      return;
-    }
-
     try {
       setIsLoading(true);
-      await register(name, email, password);
+      await register(name, mssv, password);
       Alert.alert(
         'Đăng ký thành công', 
         'Tài khoản của bạn đã được tạo thành công!',
@@ -59,11 +52,10 @@ const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         />
 
         <TextInput
-          label="Email"
-          value={email}
-          onChangeText={setEmail}
+          label="Mã số sinh viên"
+          value={mssv}
+          onChangeText={setMssv}
           mode="outlined"
-          keyboardType="email-address"
           autoCapitalize="none"
           style={styles.input}
         />
