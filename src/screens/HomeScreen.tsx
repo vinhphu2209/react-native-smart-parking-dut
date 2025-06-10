@@ -88,9 +88,9 @@ const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
           <Card style={styles.historyCard}>
             <Card.Content>
-              <Title style={styles.historyTitle}>Lịch sử gần đây</Title>
+              <Title style={styles.historyTitle}>Lịch sử ra vào gần đây</Title>
               <Paragraph style={styles.historyText}>
-                Xem lịch sử gửi xe của bạn tại tab "Lịch sử"
+                Xem lịch sử gửi xe của bạn tại tab "Lịch sử ra vào".
               </Paragraph>
               <Button 
                 mode="outlined" 
@@ -98,7 +98,7 @@ const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                 icon="history"
                 onPress={() => navigation.navigate('History')}
               >
-                Xem lịch sử
+                Xem lịch sử ra vào
               </Button>
             </Card.Content>
           </Card>

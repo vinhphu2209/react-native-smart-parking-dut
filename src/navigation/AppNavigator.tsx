@@ -98,17 +98,17 @@ const MainTabNavigator = () => (
     <AppTab.Screen 
       name="Home" 
       component={HomeScreen} 
-      options={{ title: 'Trang Chủ' }}
+      options={{ title: 'Trang chủ' }}
     />
     <AppTab.Screen 
       name="History" 
       component={HistoryScreen} 
-      options={{ title: 'Lịch Sử' }}
+      options={{ title: 'Lịch sử ra vào' }}
     />
     <AppTab.Screen 
       name="Profile" 
       component={ProfileScreen} 
-      options={{ title: 'Tài Khoản' }}
+      options={{ title: 'Tài khoản' }}
     />
   </AppTab.Navigator>
 );

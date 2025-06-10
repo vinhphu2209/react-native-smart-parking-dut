@@ -86,7 +86,7 @@ const HistoryScreen: React.FC = () => {
           <View style={styles.detailRow}>
             <Text style={styles.label}>Thời gian ra:</Text>
             <Text style={styles.value}>
-              {item.thoi_gian_ra ? formatDateTime(item.thoi_gian_ra) : 'Chưa ra'}
+              {item.thoi_gian_ra ? formatDateTime(item.thoi_gian_ra) : 'Đang đỗ'}
             </Text>
           </View>
         </Card.Content>

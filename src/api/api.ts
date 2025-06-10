@@ -2,7 +2,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Địa chỉ API Backend - thay đổi theo cấu hình của bạn
-const API_BASE_URL = 'http://172.20.10.4:8000';
+const API_BASE_URL = 'http://10.10.58.42:8000';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -55,30 +55,45 @@ api.interceptors.request.use(
   }
 );
 
-// Hàm đăng nhập giả lập
-export const login = async (mssv: string, password: string) => {
-  // Kiểm tra tài khoản trong dữ liệu demo
-  const account = demoAccounts.find(acc => acc.ma_sv === mssv && acc.mat_khau === password);
-  
-  if (!account) {
-    throw new Error('Tài khoản hoặc mật khẩu không chính xác');
+// Hàm đăng nhập mới sử dụng API
+export const login = async (ma_sv: string, password: string) => {
+  try {
+    const response = await api.post('/api_login/', {
+      ma_sv: ma_sv,
+      password: password,
+    });
+
+    if (response.data && response.data.message === "Đăng nhập thành công.") {
+      // API không trả về token, tạo một token giả để duy trì phiên đăng nhập
+      const fakeToken = `api_token_${new Date().getTime()}`;
+      
+      const { user_info } = response.data;
+      
+      // Chuyển đổi dữ liệu người dùng từ API sang định dạng của ứng dụng
+      const userData = {
+        mssv: user_info.ma_sv.toString(),
+        name: user_info.ho_ten,
+        balance: user_info.so_du,
+        // Các trường khác có thể không có trong phản hồi này
+        id_rfid: user_info.id_rfid || null, 
+      };
+
+      return {
+        token: fakeToken,
+        user: userData,
+      };
+    } else {
+      // Xử lý các trường hợp đăng nhập không thành công khác từ API
+      throw new Error(response.data.message || 'Thông tin đăng nhập không chính xác.');
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      // Lấy thông điệp lỗi cụ thể từ phản hồi của server nếu có
+      throw new Error(error.response.data.detail || 'Lỗi máy chủ. Vui lòng thử lại sau.');
+    }
+    // Các lỗi mạng hoặc lỗi không xác định khác
+    throw new Error('Đã xảy ra lỗi kết nối. Vui lòng kiểm tra mạng của bạn.');
   }
-  
-  // Tạo token giả lập
-  const fakeToken = `demo_token_${Date.now()}`;
-  
-  // Chuẩn bị dữ liệu trả về theo định dạng người dùng cần
-  const userData = {
-    mssv: account.ma_sv,
-    name: account.ho_ten,
-    balance: account.so_tien_hien_co,
-    id_rfid: account.id_rfid
-  };
-  
-  return {
-    token: fakeToken,
-    user: userData
-  };
 };
 
 // Hàm đăng ký giả lập
