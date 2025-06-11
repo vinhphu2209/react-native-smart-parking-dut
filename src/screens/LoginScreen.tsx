@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Image, Alert } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { View, StyleSheet, Image, Alert, TouchableOpacity } from 'react-native';
 import { TextInput, Button, Text, ActivityIndicator } from 'react-native-paper';
 import { useAuth } from '../context/AuthContext';
+import ServerConfigModal from '../components/ServerConfigModal';
 
 const LoginScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [mssv, setMssv] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
+  const [isModalVisible, setModalVisible] = useState(false);
 
   const handleLogin = async () => {
     if (!mssv || !password) {
@@ -18,8 +20,8 @@ const LoginScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     try {
       setIsLoading(true);
       await login(mssv, password);
-    } catch (error) {
-      Alert.alert('Đăng nhập thất bại', 'MSSV hoặc mật khẩu không chính xác');
+    } catch (error: any) {
+      Alert.alert('Đăng nhập thất bại', error.message || 'MSSV hoặc mật khẩu không chính xác');
       console.error(error);
     } finally {
       setIsLoading(false);
@@ -28,6 +30,15 @@ const LoginScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.settingsButton} onPress={() => setModalVisible(true)}>
+        <Text style={styles.settingsButtonText}>⚙️</Text>
+      </TouchableOpacity>
+
+      <ServerConfigModal 
+        visible={isModalVisible}
+        onClose={() => setModalVisible(false)}
+      />
+
       <View style={styles.logoContainer}>
         <Image 
           source={require('../../assets/icon.png')} 
@@ -74,10 +85,10 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: '#fff',
+    justifyContent: 'center',
   },
   logoContainer: {
     alignItems: 'center',
-    marginTop: 60,
     marginBottom: 40,
   },
   logo: {
@@ -101,6 +112,16 @@ const styles = StyleSheet.create({
     marginTop: 10,
     paddingVertical: 8,
     backgroundColor: '#4a6ea9',
+  },
+  settingsButton: {
+    position: 'absolute',
+    top: 40,
+    right: 20,
+    padding: 10,
+    zIndex: 1,
+  },
+  settingsButtonText: {
+    fontSize: 28,
   },
 });
 

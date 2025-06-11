@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "sample-app",
-    "slug": "sample-app",
+    "name": "Smart Parking DUT",
+    "slug": "smart-parking-dut",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -12,16 +12,29 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.vinhphu2209.smartparkingdut",
+      "buildNumber": "1",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.vinhphu2209.smartparkingdut",
+      "versionCode": 1,
+      "usesCleartextTraffic": true
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "e4cc98ee-8c15-48f8-9e68-b0a75acc05ab"
+      }
     }
   }
 }

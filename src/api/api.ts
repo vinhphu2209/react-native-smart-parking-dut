@@ -1,11 +1,12 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getApiUrl } from '../config/apiConfig';
 
-// Địa chỉ API Backend - thay đổi theo cấu hình của bạn
-const API_BASE_URL = 'http://10.10.58.42:8000';
+// Địa chỉ API Backend - sẽ được cập nhật động
+// const API_BASE_URL = 'http://192.168.137.213:8000';
 
 const api = axios.create({
-  baseURL: API_BASE_URL,
+  // baseURL sẽ được đặt trong interceptor
   headers: {
     'Content-Type': 'application/json',
   },
@@ -44,6 +45,9 @@ const demoAccounts = [
 // Thêm interceptor để tự động thêm token vào header
 api.interceptors.request.use(
   async (config) => {
+    // Đặt baseURL một cách động cho mỗi request
+    config.baseURL = await getApiUrl();
+    
     const token = await AsyncStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
