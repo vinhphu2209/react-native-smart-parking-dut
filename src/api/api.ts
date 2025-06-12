@@ -42,11 +42,17 @@ const demoAccounts = [
   } 
 ];
 
-// Thêm interceptor để tự động thêm token vào header
+// Add request interceptor for debugging
 api.interceptors.request.use(
   async (config) => {
     // Đặt baseURL một cách động cho mỗi request
     config.baseURL = await getApiUrl();
+    console.log('API Request:', {
+      url: config.baseURL + config.url,
+      method: config.method,
+      headers: config.headers,
+      data: config.data
+    });
     
     const token = await AsyncStorage.getItem('token');
     if (token) {
@@ -55,6 +61,30 @@ api.interceptors.request.use(
     return config;
   },
   (error) => {
+    console.error('API Request Error:', error);
+    return Promise.reject(error);
+  }
+);
+
+// Add response interceptor for debugging
+api.interceptors.response.use(
+  (response) => {
+    console.log('API Response:', {
+      status: response.status,
+      data: response.data,
+      headers: response.headers
+    });
+    return response;
+  },
+  (error) => {
+    console.error('API Response Error:', {
+      message: error.message,
+      config: error.config,
+      response: error.response ? {
+        status: error.response.status,
+        data: error.response.data
+      } : null
+    });
     return Promise.reject(error);
   }
 );

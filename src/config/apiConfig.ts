@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const API_URL_KEY = 'api_base_url';
-const DEFAULT_API_URL = 'http://192.168.137.213:8000'; // URL mặc định an toàn
+const DEFAULT_API_URL = 'http://192.168.1.12:8000'; // URL mặc định an toàn
 
 let currentApiUrl = '';
 
